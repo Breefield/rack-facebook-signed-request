@@ -20,7 +20,7 @@ module Rack
         @request = Rack::Request.new(env)
         # RESTify the default POST request from Facebook
         if request.POST['signed_request'] && @options[:hijack_signed_request]
-          env['REQUEST_METHOD'] = 'GET'
+          env['REQUEST_METHOD'] = 'GET' unless request.POST['signed_request_cloned']
           env['facebook.signed_request'] = request.POST['signed_request'] if request.POST['signed_request']
 
           app_id, secret = [@options.fetch(:app_id), @options.fetch(:secret)]
